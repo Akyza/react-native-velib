@@ -3,26 +3,41 @@ import {
   StyleSheet,
   Text,
   FlatList,
+  Button,
+  View
 } from 'react-native';
 import ViewStation from '../exercices/ViewStation';
+import { getVelibFromApi } from '../API/Velib';
 
-export default function ListScreen() {
-  return (
-    <FlatList
-      style={styles.container}
-      renderItem={({ item }) => {
-        return <Text>{item.title}</Text>
-      }}
-      data={[
-        { id: "1", title: "Station 1", position: "1", distance: "10m", nb_bornes: "50" },
-        { id: "2", title: "Station 2", position: "6", distance: "100m", nb_bornes: "45" },
-        { id: "3", title: "Station 3", position: "3", distance: "5m", nb_bornes: "30" },
-        { id: "4", title: "Station 4", position: "4", distance: "50m", nb_bornes: "60" },
-      ]}
-      keyExtractor={item => item.id}
-      renderItem={({item}) => <ViewStation station={item}/>}
-    />
-  );
+export default class ListScreen extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      stations: []
+    }
+  }
+  componentDidMount(){
+    getVelibFromApi().then(data => {
+      this.setState({
+        stations: data.records
+      });
+    });
+  }
+
+  render(){
+    return (
+        <FlatList
+          style={styles.container}
+          renderItem={({ item }) => {
+            return <Text>{item.title}</Text>
+          }}
+          data={this.state.stations}
+          keyExtractor={item => item.recordid}
+          renderItem={({item}) => <ViewStation station={item}/>}
+        />
+    );
+  }
 }
 
 ListScreen.navigationOptions = {

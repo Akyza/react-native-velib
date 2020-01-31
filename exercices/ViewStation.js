@@ -7,11 +7,10 @@ class ViewStation extends React.Component{
     return(
       <View style={styles.main_container}>
         <View style={styles.header_container}>
-          <Text style={styles.title_text}>{station.title}</Text>
-          <Text>Position : {station.position}</Text>
+          <Text style={styles.title_text}>{station.fields.station_name}</Text>
+          <Text>Disponibilité : {station.fields.station_state}</Text>
         </View>
-        <Text>Distance : {station.distance}</Text>
-        <Text>Nombre de bornes : {station.nb_bornes}</Text>
+        <Text>Nombre de bornes : {station.fields.maxbikeoverflow}</Text>
       </View>
     )
   }
